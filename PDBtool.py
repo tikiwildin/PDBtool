@@ -47,22 +47,22 @@ def parse_pdb_file(filepath):
     return atoms
 
 # Insert each other functions here such as:
-def print_help()
+def print_help():
     print("help")
     
-def atom_frequencies()
+def atom_frequencies():
     print("atom frequencies")
 
-def residue_frequencies()
+def residue_frequencies():
     print("residue frequencies")
           
-def residuelength_command()
+def residuelength_command():
     print("residue length")
 
-def temp_check_command()
+def temp_check_command():
     print("temp check")
 
-def occupancy_command()
+def occupancy_command():
     print("occupancy")
 
 # Main function, I'll update periodically when functions are updated
