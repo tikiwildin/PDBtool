@@ -99,7 +99,7 @@ def main():
     print("To begin, try typing 'help' for the list of valid commands.\n")
     print("{} atoms recorded.\n".format(len(atoms)))
 
-# The program enters a while Trun loop, prompting the user with "Enter command: "
+    # The program enters a while Trun loop, prompting the user with "Enter command: "
     while True:
         try:
             # The input is stripped of extra whitespace and spit into parts
