@@ -50,10 +50,10 @@ def parse_pdb_file(filepath):
 def print_help():
     print("help")
     
-def atom_frequencies():
+def atom_frequencies(atoms):
     print("atom frequencies")
 
-def residue_frequencies():
+def residue_frequencies(atoms):
     print("residue frequencies")
           
 def residuelength_command():
