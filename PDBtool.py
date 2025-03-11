@@ -105,32 +105,32 @@ while True:
         # The input is stripped of extra whitespace and spit into parts
         # The first part is the command and the remaining is taken as arguments
         user_input = input("Enter a command: ").strip()
-        except EOFError:  # If the user presses Ctrl D or Ctrl Z it signals an end-of-file\
+    except EOFError:  # If the user presses Ctrl D or Ctrl Z it signals an end-of-file\
                           # and input() raises this exception
-             break # End of file, exit interactive loop
-        if not user_input:  # checks if the input string is empty; the user just presses enter
-            continue # prompts the user again
+            break # End of file, exit interactive loop
+    if not user_input:  # checks if the input string is empty; the user just presses enter
+        continue # prompts the user again
 
-        parts = user_input.split()
-        command = parts[0].lower()
-        args = parts[1:]
-        if command == 'help':
-            print_help()
-        elif command == 'atomfreq':
-            atom_frequencies(atoms)
-        elif command == 'resfreq':
-            residue_frequencies(atoms)
-        elif command == 'reslength':
-            residue_length_command(atoms, args)
-        elif command == 'tempcheck':
-            temp_check_command(atoms, args)
-        elif command == 'occupancy':
-            occupancy_command(atoms, args)
-        elif command == 'quit':
-            print("Exiting program, Goodbye!")
-            break
-        else:
-            print("Invalid command. Type 'help' for the list of valid commands.")
+    parts = user_input.split()
+    command = parts[0].lower()
+    args = parts[1:]
+    if command == 'help':
+        print_help()
+    elif command == 'atomfreq':
+        atom_frequencies(atoms)
+    elif command == 'resfreq':
+        residue_frequencies(atoms)
+    elif command == 'reslength':
+        residue_length_command(atoms, args)
+    elif command == 'tempcheck':
+        temp_check_command(atoms, args)
+    elif command == 'occupancy':
+        occupancy_command(atoms, args)
+    elif command == 'quit':
+        print("Exiting program, Goodbye!")
+        break
+    else:
+        print("Invalid command. Type 'help' for the list of valid commands.")
 
 
 
