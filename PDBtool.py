@@ -54,7 +54,7 @@ def atom_frequencies()
     print("atom frequencies")
 
 def residue_frequencies()
-    print("residue frequencies)
+    print("residue frequencies")
           
 def residuelength_command()
     print("residue length")
