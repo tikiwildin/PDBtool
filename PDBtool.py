@@ -56,13 +56,13 @@ def atom_frequencies(atoms):
 def residue_frequencies(atoms):
     print("residue frequencies")
           
-def residuelength_command():
+def residuelength_command(atoms, args):
     print("residue length")
 
-def temp_check_command():
+def temp_check_command(atoms, args):
     print("temp check")
 
-def occupancy_command():
+def occupancy_command(atoms, args):
     print("occupancy")
 
 # Main function, I'll update periodically when functions are updated
