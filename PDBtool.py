@@ -47,17 +47,23 @@ def parse_pdb_file(filepath):
     return atoms
 
 # Insert each other functions here such as:
-# def print_help()
+def print_help()
+    print("help")
+    
+def atom_frequencies()
+    print("atom frequencies")
 
-# def atom_frequencies
+def residue_frequencies()
+    print("residue frequencies)
+          
+def residuelength_command()
+    print("residue length")
 
-# def residue_frequencies
+def temp_check_command()
+    print("temp check")
 
-# def residue_lenght_command
-
-# def temp_check_command
-
-# def occupancy_command
+def occupancy_command()
+    print("occupancy")
 
 # Main function, I'll update periodically when functions are updated
 def main():
@@ -92,7 +98,41 @@ def main():
     print("Welcome to the pdb program.\n")
     print("To begin, try typing 'help' for the list of valid commands.\n")
     print("{} atoms recorded.\n".format(len(atoms)))
-   
+
+# The program enters a while Trun loop, prompting the user with "Enter command: "
+while True:
+    try:
+        # The input is stripped of extra whitespace and spit into parts
+        # The first part is the command and the remaining is taken as arguments
+        user_input = input("Enter a command: ").strip()
+        except EOFError:  # If the user presses Ctrl D or Ctrl Z it signals an end-of-file\
+                          # and input() raises this exception
+             break # End of file, exit interactive loop
+        if not user_input:  # checks if the input string is empty; the user just presses enter
+            continue # prompts the user again
+
+        parts = user_input.split()
+        command = parts[0].lower()
+        args = parts[1:]
+        if command == 'help':
+            print_help()
+        elif command == 'atomfreq':
+            atom_frequencies(atoms)
+        elif command == 'resfreq':
+            residue_frequencies(atoms)
+        elif command == 'reslength':
+            residue_length_command(atoms, args)
+        elif command == 'tempcheck':
+            temp_check_command(atoms, args)
+        elif command == 'occupancy':
+            occupancy_command(atoms, args)
+        elif command == 'quit':
+            print("Exiting program, Goodbye!")
+            break
+        else:
+            print("Invalid command. Type 'help' for the list of valid commands.")
+
+
 
 if __name__ == "__main__":
     main()
