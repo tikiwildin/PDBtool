@@ -4,7 +4,7 @@ import sys  # Allows us to access command-line arguments and exit the program if
 import os   # Provides functions to check file existence.
 import math  # Will need this for math functions
 
-
+#
 # This function is called when the program is not used correctly.
 # It prints out a message showing the correct usage format.
 def usage_and_exit():
