@@ -121,7 +121,7 @@ def main():
         elif command == 'resfreq':
             residue_frequencies(atoms)
         elif command == 'reslength':
-            residue_length_command(atoms, args)
+            residuelength_command(atoms, args)
         elif command == 'tempcheck':
             temp_check_command(atoms, args)
         elif command == 'occupancy':
