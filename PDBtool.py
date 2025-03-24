@@ -51,7 +51,20 @@ def print_help():
     print("help")
     
 def atom_frequencies(atoms):
-    print("atom frequencies")
+    #python PDBtool.py ./tests/6lu7.pdb
+
+    distinct_atom = {}
+    for atom in atoms:
+        currentAtomName = atom['atom_name']
+        if currentAtomName in distinct_atom:
+            distinct_atom[currentAtomName] +=1
+        else:
+            distinct_atom[currentAtomName] = 1
+
+    sorted_atoms = dict(sorted(distinct_atom.items()))
+
+    for atom in sorted_atoms:
+        print("\033[1m" + atom + ":" + "\033[0m " + str(sorted_atoms.get(atom)))
 
 def residue_frequencies(atoms):
     print("residue frequencies")
@@ -114,6 +127,7 @@ def main():
         parts = user_input.split()
         command = parts[0].lower()
         args = parts[1:]
+
         if command == 'help':
             print_help()
         elif command == 'atomfreq':
