@@ -53,21 +53,44 @@ def print_help():
 def atom_frequencies(atoms):
     #python PDBtool.py ./tests/6lu7.pdb
 
+    #key = atomName, value = number of atoms for that element
     distinct_atom = {}
+
+    #looping through the atoms list and getting the indv dictionary
     for atom in atoms:
-        currentAtomName = atom['atom_name']
+        #getting the atom's name, if it's not in the dictionary, add it and set the value to 0 else add 1
+        currentAtomName = atom['element']
         if currentAtomName in distinct_atom:
             distinct_atom[currentAtomName] +=1
         else:
             distinct_atom[currentAtomName] = 1
 
+    #python sort function, sorts the keys in alphabetical order and returns the new dictionary
     sorted_atoms = dict(sorted(distinct_atom.items()))
 
+    #loop through the new dictionary and format it to "atom: #"
     for atom in sorted_atoms:
-        print("\033[1m" + atom + ":" + "\033[0m " + str(sorted_atoms.get(atom)))
+        print(atom + ":" + str(sorted_atoms.get(atom)))
 
 def residue_frequencies(atoms):
-    print("residue frequencies")
+    #key = residueName, value = number of occurrences of that residue
+    distinct_res = {}
+
+    #looping through the atoms list and getting the indv dictionary
+    for atom in atoms:
+        #getting the residue's name, if it's not in the dictionary, add it and set the value to 0 else add 1
+        currentResidueName = atom['res_name']
+        if currentResidueName in distinct_res:
+            distinct_res[currentResidueName] +=1
+        else:
+            distinct_res[currentResidueName] = 1
+        
+        #python sort function, sorts the keys in alphabetical order and returns the new dictionary
+        sorted_residue = dict(sorted(distinct_res.items()))
+
+        #loop through the new dictionary and format it to "residue: #"
+        for residue in sorted_residue:
+            print(residue + ":" + str(sorted_residue.get(residue)))
           
 def residuelength_command(atoms, args):
     print("residue length")
@@ -76,7 +99,28 @@ def temp_check_command(atoms, args):
     print("temp check")
 
 def occupancy_command(atoms, args):
-    print("occupancy")
+    #python PDBtool.py ./tests/6lu7.pdb
+    print(args)
+    number = None
+    try:
+        number = float(args[0])
+        if(number < 0.0 or number > 1.0):
+            raise ValueError
+    except ValueError:
+        newRange = input("The input is invalid! Please enter a value between 0.0 - 1.0 : ")
+        occupancy_command(atoms, newRange)
+    
+    tempAbove = 0
+    tempAt = 0
+    tempBelow = 0
+    
+    # print("num: " + str(number) + " args: " + str(args))
+
+
+    # if ( < 0.0) or (float(args) > 1.0):
+    #     newRange = input("The number is invalid. Please enter a value between 0.0 - 1.0")
+    #     occupancy_command(atoms, newRange)
+
 
 # Main function, I'll update periodically when functions are updated
 def main():
