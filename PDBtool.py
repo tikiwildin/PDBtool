@@ -48,7 +48,54 @@ def parse_pdb_file(filepath):
 
 # Insert each other functions here such as:
 def print_help():
-    print("help")
+     help_text = """
+Valid commands:
+    help
+        Displays this help message with details about every valid command.
+
+    atomfreq 
+        Displays the frequency of each distinct atom (by element) in the file.
+        Example output:
+            C: 3201
+            N: 918
+            O: 1044
+            P: 42
+            S: 23
+
+    resfreq
+        Displays the frequency of each distinct residue (three-letter code) in the file.
+        Example output:
+            ALA: 175
+            ARG: 306
+            ...
+            TYR: 204
+
+    reslength <res_name> <chain_id> <res_seq_num>
+        Calculates and prints the maximum Euclidean distance (in angstroms) between any two atoms
+        in the specified residue.
+        - <res_name>: three-letter residue name (uppercase)
+        - <chain_id>: one-letter chain identifier (uppercase)
+        - <res_seq_num>: integer residue sequence number
+        Example:
+            reslength GLU A 764
+
+    tempcheck <decimal>
+        Reports the frequency (and percentage) of atoms whose temperature factor is below, at, and above
+        the specified value (between 0.00 and 100.00).
+        Example:
+            tempcheck 50.00
+
+    occupancy <decimal>
+        Reports the frequency (and percentage) of atoms whose occupancy is below, at, and above the
+        specified value (between 0.00 and 1.00).
+        Example:
+            occupancy 1.00
+
+    quit
+        Exits the program.
+    """
+    print(help_text)
+
     
 def atom_frequencies(atoms):
     #python PDBtool.py ./tests/6lu7.pdb
