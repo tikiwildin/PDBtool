@@ -94,7 +94,7 @@ Valid commands:
     quit
         Exits the program.
     """
-    print(help_text)
+        print(help_text)
 
     
 def atom_frequencies(atoms):
