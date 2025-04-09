@@ -48,7 +48,7 @@ def parse_pdb_file(filepath):
 
 # Insert each other functions here such as:
 def print_help():
-     help_text = """
+    help_text = """
 Valid commands:
     help
         Displays this help message with details about every valid command.
