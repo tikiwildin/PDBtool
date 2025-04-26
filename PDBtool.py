@@ -140,7 +140,62 @@ def residue_frequencies(atoms):
             print(residue + ":" + str(sorted_residue.get(residue)))
           
 def residuelength_command(atoms, args):
-    print("residue length")
+    if len(args) != 3:
+        if len(args) == 0:
+            print("Missing arguments to reslength")
+        else:
+            print("Incorrect number of arguments to reslength")
+        print("Usage: reslength <res_name> <chain_id> <num>")
+        print("For details about the reslength command, use the 'help' command.")
+        return
+
+    res_name, chain_id, res_seq_str = args
+
+
+
+    if len(res_name) != 3 or not res_name.isupper() or len(chain_id) != 1 or not chain_id.isupper():
+        print("Usage: reslength <res_name> <chain_id> <num>")
+        print("For details about the reslength command, use the 'help' command.")
+        return
+
+    try:
+        res_seq = int(res_seq_str)
+    except ValueError:
+        print("Usage: reslength <res_name> <chain_id> <num>")
+        print("For details about the reslength command, use the 'help' command.")
+        return
+
+
+
+    residue_atoms = [
+        atom for atom in atoms
+        if atom['res_name'] == res_name and
+           atom['chain_id'] == chain_id and
+           atom['res_seq'] == res_seq
+    ]
+
+    if not residue_atoms:
+        print("No residue present.")
+        return
+
+
+
+    max_distance = 0.0
+    n = len(residue_atoms)
+    for i in range(n):
+        for j in range(i + 1, n):
+            dx = residue_atoms[i]['x'] - residue_atoms[j]['x']
+            dy = residue_atoms[i]['y'] - residue_atoms[j]['y']
+            dz = residue_atoms[i]['z'] - residue_atoms[j]['z']
+            d = math.sqrt(dx * dx + dy * dy + dz * dz)
+            if d > max_distance:
+                max_distance = d
+
+
+
+    print("{} with sequence number {} in chain {} has {:.2f} angstroms.".format(
+        res_name, res_seq, chain_id, max_distance
+    ))
 
 def temp_check_command(atoms, args):
     print("temp check")
