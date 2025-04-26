@@ -198,7 +198,34 @@ def residuelength_command(atoms, args):
     ))
 
 def temp_check_command(atoms, args):
-    print("temp check")
+    if len(args) != 1:
+        if len(args) == 0:
+            print("Missing arguments to tempcheck")
+        else:
+            print("Incorrect number of arguments to tempcheck")
+        print("Usage: tempcheck <decimal>")
+        print("For details about the tempcheck command, use the 'help' command.")
+        return
+    
+    try:
+        value = float(args[0])
+    except ValueError:
+        print("Usage: tempcheck <decimal>")
+        print("For details about the tempcheck command, use the 'help' command.")
+        return
+    if value < 0.00 or value > 100.00:
+        print("Usage: tempcheck <decimal>")
+        print("For details about the tempcheck command, use the 'help' command.")
+        return
+    
+    total = len(atoms)
+    below = sum(1 for atom in atoms if atom['temp_factor'] < value)
+    at_val = sum(1 for atom in atoms if math.isclose(atom['temp_factor'], value, rel_tol=1e-6, abs_tol=1e-6))
+    above = total - below - at_val 
+
+    print("Temperature factor below {:.2f}: {} / {} ({:.1f}%)".format(value, below, total, below/total*100))
+    print("Temperature factor at {:.2f}: {} / {} ({:.1f}%)".format(value, at_val, total, at_val/total*100))
+    print("Tempture factor above {:.2f}: {} / {} ({:.1f}%)".format(value, above, total, above/total*100))
 
 def occupancy_command(atoms, args):
     #python PDBtool.py ./tests/6lu7.pdb
