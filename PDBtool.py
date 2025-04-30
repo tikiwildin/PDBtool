@@ -139,34 +139,41 @@ def residue_frequencies(atoms):
         for residue in sorted_residue:
             print(residue + ":" + str(sorted_residue.get(residue)))
           
-def residuelength_command(atoms, args):
+def reslength_command(atoms, args):
+
+    # Check if the number of arguments is correct
     if len(args) != 3:
         if len(args) == 0:
+            # If no arguments were given, print missing arguments
             print("Missing arguments to reslength")
         else:
+            # If too many or too few arguments were given, print incorrect number
             print("Incorrect number of arguments to reslength")
+        # Tell the user how to correctly use the command
         print("Usage: reslength <res_name> <chain_id> <num>")
         print("For details about the reslength command, use the 'help' command.")
-        return
+        return  # Stop the function here if arguments are wrong
 
+    # Unpack the three arguments into separate variables
     res_name, chain_id, res_seq_str = args
 
-
-
+    #Check if res_name and chain_id are the correct format
     if len(res_name) != 3 or not res_name.isupper() or len(chain_id) != 1 or not chain_id.isupper():
+        # If the format is wrong, show usage message
         print("Usage: reslength <res_name> <chain_id> <num>")
         print("For details about the reslength command, use the 'help' command.")
-        return
+        return  # Stop the function if format is wrong
 
+    #Try to convert the third argument (residue sequence number) into an integer
     try:
         res_seq = int(res_seq_str)
     except ValueError:
+        # If the conversion fails (for example, user typed a word), show usage message
         print("Usage: reslength <res_name> <chain_id> <num>")
         print("For details about the reslength command, use the 'help' command.")
-        return
+        return  # Stop the function if it's not a number
 
-
-
+    # Filter the atoms that match the provided residue name, chain ID, and sequence number
     residue_atoms = [
         atom for atom in atoms
         if atom['res_name'] == res_name and
@@ -174,12 +181,12 @@ def residuelength_command(atoms, args):
            atom['res_seq'] == res_seq
     ]
 
+    # If no atoms match, print that the residue was not found
     if not residue_atoms:
         print("No residue present.")
-        return
+        return  # Stop the function if no matching atoms
 
-
-
+    # Find the maximum distance between any two atoms in this residue
     max_distance = 0.0
     n = len(residue_atoms)
     for i in range(n):
@@ -191,41 +198,62 @@ def residuelength_command(atoms, args):
             if d > max_distance:
                 max_distance = d
 
-
-
+    # Print the result nicely
     print("{} with sequence number {} in chain {} has {:.2f} angstroms.".format(
         res_name, res_seq, chain_id, max_distance
     ))
 
 def temp_check_command(atoms, args):
+
+    # Check if the number of arguments is NOT exactly 1
     if len(args) != 1:
         if len(args) == 0:
             print("Missing arguments to tempcheck")
         else:
+
+            # If the user gave too many arguments, print an "incorrect number" message
             print("Incorrect number of arguments to tempcheck")
+        
+        # Tell the user the correct way to use the command
         print("Usage: tempcheck <decimal>")
         print("For details about the tempcheck command, use the 'help' command.")
-        return
+        return # Stop the function here if arguments are wrong
     
+    # Try to convert the argument to a decimal number (float)
     try:
         value = float(args[0])
     except ValueError:
+        # If the user typed something that's not a number, show the usage message
         print("Usage: tempcheck <decimal>")
         print("For details about the tempcheck command, use the 'help' command.")
-        return
+        return # Stop the function here if it's not a number
+    
+    # Check if the decimal number is between 0.00 and 100.00
     if value < 0.00 or value > 100.00:
+        # If it's outside this range, show the usage message
         print("Usage: tempcheck <decimal>")
         print("For details about the tempcheck command, use the 'help' command.")
         return
     
+    # Get the total number of atoms
     total = len(atoms)
+
+    # Count how many atoms have a temperature factor LESS than the given value
     below = sum(1 for atom in atoms if atom['temp_factor'] < value)
+
+    # Count how many atoms have a temperature factor EQUAL to the given value
+    # math.isclose is used to safely compare decimals that might have tiny rounding errors
     at_val = sum(1 for atom in atoms if math.isclose(atom['temp_factor'], value, rel_tol=1e-6, abs_tol=1e-6))
+    
+    # Calculate how many atoms have a temperature factor GREATER than the value
+    # It’s total atoms minus the ones below and at the value
     above = total - below - at_val 
 
+    # Print the results showing how many atoms are below, at, and above the given temperature
+    # It also shows the percentage for each
     print("Temperature factor below {:.2f}: {} / {} ({:.1f}%)".format(value, below, total, below/total*100))
     print("Temperature factor at {:.2f}: {} / {} ({:.1f}%)".format(value, at_val, total, at_val/total*100))
-    print("Tempture factor above {:.2f}: {} / {} ({:.1f}%)".format(value, above, total, above/total*100))
+    print("Temperature factor above {:.2f}: {} / {} ({:.1f}%)".format(value, above, total, above/total*100))
 
 def occupancy_command(atoms, args):
     #python PDBtool.py ./tests/6lu7.pdb
