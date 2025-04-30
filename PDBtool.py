@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# Authors: Fenley, Atiq, Carey, Nawel
+# Date: 04/30/2025
+
 import sys  # Allows us to access command-line arguments and exit the program if needed.
 import os   # Provides functions to check file existence.
 import math  # Will need this for math functions
