@@ -3,16 +3,17 @@
 import sys  # Allows us to access command-line arguments and exit the program if needed.
 import os   # Provides functions to check file existence.
 import math  # Will need this for math functions
+import string # Will need this for checking strings
 
-#
 # This function is called when the program is not used correctly.
 # It prints out a message showing the correct usage format.
 def usage_and_exit():
     print("Usage: {} <pdb_file_path".format(sys.argv[0]))
     sys.exit(1) # terminates the program with a non-zero status to indicate an error.
 
+
 def parse_pdb_file(filepath):
-    # Store information in list
+    # Store information in a list
     atoms = []
     try:
         with open(filepath, 'r') as f:
@@ -46,7 +47,7 @@ def parse_pdb_file(filepath):
         usage_and_exit()
     return atoms
 
-# Insert each other functions here such as:
+#Prints out all the valid functions with a description of what they do and an example
 def print_help():
     help_text = """
 Valid commands:
@@ -98,7 +99,6 @@ Valid commands:
 
     
 def atom_frequencies(atoms):
-    #python PDBtool.py ./tests/6lu7.pdb
 
     #key = atomName, value = number of atoms for that element
     distinct_atom = {}
@@ -132,48 +132,39 @@ def residue_frequencies(atoms):
         else:
             distinct_res[currentResidueName] = 1
         
-        #python sort function, sorts the keys in alphabetical order and returns the new dictionary
-        sorted_residue = dict(sorted(distinct_res.items()))
+    #python sort function, sorts the keys in alphabetical order and returns the new dictionary
+    sorted_residue = dict(sorted(distinct_res.items()))
 
-        #loop through the new dictionary and format it to "residue: #"
-        for residue in sorted_residue:
-            print(residue + ":" + str(sorted_residue.get(residue)))
+    #loop through the new dictionary and format it to "residue: #"
+    for residue in sorted_residue:
+        print(residue + ":" + str(sorted_residue.get(residue)))
           
-def reslength_command(atoms, args):
+def residuelength_command(atoms, args):
 
-    # Check if the number of arguments is correct
+    #Checking for the correct number of arguments
     if len(args) != 3:
         if len(args) == 0:
-            # If no arguments were given, print missing arguments
             print("Missing arguments to reslength")
         else:
-            # If too many or too few arguments were given, print incorrect number
             print("Incorrect number of arguments to reslength")
-        # Tell the user how to correctly use the command
         print("Usage: reslength <res_name> <chain_id> <num>")
         print("For details about the reslength command, use the 'help' command.")
-        return  # Stop the function here if arguments are wrong
+        return
 
-    # Unpack the three arguments into separate variables
     res_name, chain_id, res_seq_str = args
 
-    #Check if res_name and chain_id are the correct format
     if len(res_name) != 3 or not res_name.isupper() or len(chain_id) != 1 or not chain_id.isupper():
-        # If the format is wrong, show usage message
         print("Usage: reslength <res_name> <chain_id> <num>")
         print("For details about the reslength command, use the 'help' command.")
-        return  # Stop the function if format is wrong
+        return
 
-    #Try to convert the third argument (residue sequence number) into an integer
     try:
         res_seq = int(res_seq_str)
     except ValueError:
-        # If the conversion fails (for example, user typed a word), show usage message
         print("Usage: reslength <res_name> <chain_id> <num>")
         print("For details about the reslength command, use the 'help' command.")
-        return  # Stop the function if it's not a number
+        return
 
-    # Filter the atoms that match the provided residue name, chain ID, and sequence number
     residue_atoms = [
         atom for atom in atoms
         if atom['res_name'] == res_name and
@@ -181,12 +172,10 @@ def reslength_command(atoms, args):
            atom['res_seq'] == res_seq
     ]
 
-    # If no atoms match, print that the residue was not found
     if not residue_atoms:
         print("No residue present.")
-        return  # Stop the function if no matching atoms
+        return
 
-    # Find the maximum distance between any two atoms in this residue
     max_distance = 0.0
     n = len(residue_atoms)
     for i in range(n):
@@ -198,93 +187,102 @@ def reslength_command(atoms, args):
             if d > max_distance:
                 max_distance = d
 
-    # Print the result nicely
     print("{} with sequence number {} in chain {} has {:.2f} angstroms.".format(
         res_name, res_seq, chain_id, max_distance
     ))
 
 def temp_check_command(atoms, args):
 
-    # Check if the number of arguments is NOT exactly 1
+    #Checking for the correct number of arguments
     if len(args) != 1:
         if len(args) == 0:
             print("Missing arguments to tempcheck")
+            return
         else:
-
-            # If the user gave too many arguments, print an "incorrect number" message
             print("Incorrect number of arguments to tempcheck")
-        
-        # Tell the user the correct way to use the command
-        print("Usage: tempcheck <decimal>")
-        print("For details about the tempcheck command, use the 'help' command.")
-        return # Stop the function here if arguments are wrong
-    
-    # Try to convert the argument to a decimal number (float)
-    try:
-        value = float(args[0])
-    except ValueError:
-        # If the user typed something that's not a number, show the usage message
-        print("Usage: tempcheck <decimal>")
-        print("For details about the tempcheck command, use the 'help' command.")
-        return # Stop the function here if it's not a number
-    
-    # Check if the decimal number is between 0.00 and 100.00
-    if value < 0.00 or value > 100.00:
-        # If it's outside this range, show the usage message
+            return
         print("Usage: tempcheck <decimal>")
         print("For details about the tempcheck command, use the 'help' command.")
         return
     
-    # Get the total number of atoms
-    total = len(atoms)
-
-    # Count how many atoms have a temperature factor LESS than the given value
-    below = sum(1 for atom in atoms if atom['temp_factor'] < value)
-
-    # Count how many atoms have a temperature factor EQUAL to the given value
-    # math.isclose is used to safely compare decimals that might have tiny rounding errors
-    at_val = sum(1 for atom in atoms if math.isclose(atom['temp_factor'], value, rel_tol=1e-6, abs_tol=1e-6))
+    try:
+        value = float(args[0])
+    except ValueError:
+        print("Usage: tempcheck <decimal>")
+        print("For details about the tempcheck command, use the 'help' command.")
+        return
+    if value < 0.00 or value > 100.00:
+        print("Usage: tempcheck <decimal>")
+        print("For details about the tempcheck command, use the 'help' command.")
+        return
     
-    # Calculate how many atoms have a temperature factor GREATER than the value
-    # It’s total atoms minus the ones below and at the value
+    total = len(atoms)
+    below = sum(1 for atom in atoms if atom['temp_factor'] < value)
+    at_val = sum(1 for atom in atoms if math.isclose(atom['temp_factor'], value, rel_tol=1e-6, abs_tol=1e-6))
     above = total - below - at_val 
 
-    # Print the results showing how many atoms are below, at, and above the given temperature
-    # It also shows the percentage for each
     print("Temperature factor below {:.2f}: {} / {} ({:.1f}%)".format(value, below, total, below/total*100))
     print("Temperature factor at {:.2f}: {} / {} ({:.1f}%)".format(value, at_val, total, at_val/total*100))
-    print("Temperature factor above {:.2f}: {} / {} ({:.1f}%)".format(value, above, total, above/total*100))
+    print("Tempture factor above {:.2f}: {} / {} ({:.1f}%)".format(value, above, total, above/total*100))
+
 
 def occupancy_command(atoms, args):
-    #python PDBtool.py ./tests/6lu7.pdb
-    print(args)
-    number = None
+
+    #This part checks if there is an argument and if it's just 1 argument being passed. 
+    #Otherwise, prints the corresponding error message
+    if (not args):
+        print("Missing argument to occupancy")
+        return
+    elif(len(args) > 1):
+        print("Incorrect number of arguments to occupancy")
+        return
+
+    argument_1 = args[0] #terminal args[1], [0] is the fileName, but somehow it works in VScode
+    occValue = None
+
+    #There's at least 1 argument if the code ran till here. 
+    #This part checks if that argument contains anything besides numbers and if it within the range of (0.00-1.00)
+    #Otherwise, prints the corresponding error message
     try:
-        number = float(args[0])
-        if(number < 0.0 or number > 1.0):
+        occValue = float(argument_1)
+        if((occValue < 0.0) or (occValue > 1.0)):
             raise ValueError
-    except ValueError:
-        newRange = input("The input is invalid! Please enter a value between 0.0 - 1.0 : ")
-        occupancy_command(atoms, newRange)
+    except ValueError as e:
+        print("Usage: occupancy <decimal>\nFor details about the occupancy command, use the 'help' command.")
+        return
     
-    tempAbove = 0
-    tempAt = 0
-    tempBelow = 0
+    #Storing total, below, at_val, above as int
+    total = len(atoms)
+    below = 0;
+    at_val = 0;
+    above = 0;
+
+    #Going through the atoms list and getting the indv atom dictionary
+    #Increment the corresponding val if it's below, above, or at the occupancy value that the user inputed
+    for atom in atoms:
+        currentOccValue = atom['occupancy']
+
+        if(currentOccValue > occValue):
+            below+=1
+
+        elif(currentOccValue < occValue):
+            above+=1
+
+        else:
+            at_val+=1
     
-    # print("num: " + str(number) + " args: " + str(args))
+    #Printing the result in the corresponding format
+    print("Temperature factor below " + "{:.2f}".format(occValue) + ": " + str(below) + " / " + str(total) + " (" + str(below/(total)*100.0) + "%)" )
+    print("Temperature factor at " + "{:.2f}".format(occValue) + ": " + str(at_val) + " / " + str(total) + " (" + str(at_val/(total)*100.0) + "%)" )
+    print("Temperature factor above " + "{:.2f}".format(occValue) + ": " + str(above) + " / " + str(total) + " (" + str(above/(total)*100.0) + "%)" )
 
 
-    # if ( < 0.0) or (float(args) > 1.0):
-    #     newRange = input("The number is invalid. Please enter a value between 0.0 - 1.0")
-    #     occupancy_command(atoms, newRange)
-
-
-# Main function, I'll update periodically when functions are updated
+# Main function!!
 def main():
     if len(sys.argv) != 2:
        usage_and_exit()
       
-    # Assigning the pdb file to the variable pdb_file, this is the  second
+    # Assigning the pdb file to the variable pdb_file, this is the second
     # argument when the user types ./PDBtool.py file.pdb
     pdb_file = sys.argv[1]
 
@@ -292,6 +290,7 @@ def main():
     # types ./PDBtool.py file.pdb, here file and .pdb is
     # seperated
     file_extension = os.path.splitext(pdb_file)
+
     # If the file dosen't exist exit
     if not os.path.exists(pdb_file):
         print("Error: '{}' does not exists".format(pdb_file))
@@ -304,9 +303,7 @@ def main():
     if file_extension[1] != '.pdb':
         print("Wrong file type")
         usage_and_exit()
-    # Just for testing 
-    # print("Successfully opened file")
-  
+
     # reads the file and builds a list of atom dictionaries.
     atoms = parse_pdb_file(pdb_file) 
     print("Welcome to the pdb program.\n")
@@ -346,8 +343,6 @@ def main():
             break
         else:
             print("Invalid command. Type 'help' for the list of valid commands.")
-
-
 
 if __name__ == "__main__":
     main()
