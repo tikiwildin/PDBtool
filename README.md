@@ -40,6 +40,10 @@ For example:
 When you run the program, it will display a welcome message along with the total number of atoms recorded. You can then enter interactive commands. For example:
 ![image](https://github.com/user-attachments/assets/9ea1713e-5e22-4ac4-a8ad-72a43bf35cb4)
 
+## Additional Document
+https://docs.google.com/document/d/1mRITJdA88KFb5D8eGXbuA3EUgomXNhkHhAdKpUNQ8p0/edit?usp=sharing
+
+
 
 
 
