@@ -231,7 +231,7 @@ def occupancy_command(atoms, args):
 
     #This part checks if there is an argument and if it's just 1 argument being passed. 
     #Otherwise, prints the corresponding error message
-  if len(args) != 1:
+    if len(args) != 1:
         if len(args) == 0:
             print("Misssing argument to occupancy")
         else:
