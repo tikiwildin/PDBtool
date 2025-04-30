@@ -200,10 +200,8 @@ def temp_check_command(atoms, args):
     if len(args) != 1:
         if len(args) == 0:
             print("Missing arguments to tempcheck")
-            return
         else:
             print("Incorrect number of arguments to tempcheck")
-            return
         print("Usage: tempcheck <decimal>")
         print("For details about the tempcheck command, use the 'help' command.")
         return
@@ -233,12 +231,15 @@ def occupancy_command(atoms, args):
 
     #This part checks if there is an argument and if it's just 1 argument being passed. 
     #Otherwise, prints the corresponding error message
-    if (not args):
-        print("Missing argument to occupancy")
+  if len(args) != 1:
+        if len(args) == 0:
+            print("Misssing argument to occupancy")
+        else:
+            print("Incorrect number of arguments to occupancy")
+        print("Usage: occupancy <decimal>")
+        print("For details about the occupancy command, use the 'help' command.")
         return
-    elif(len(args) > 1):
-        print("Incorrect number of arguments to occupancy")
-        return
+    
 
     argument_1 = args[0] #terminal args[1], [0] is the fileName, but somehow it works in VScode
     occValue = None
