@@ -274,9 +274,9 @@ def occupancy_command(atoms, args):
             at_val+=1
 
     #Printing the result in the corresponding format
-    print("Temperature factor below " + "{:.2f}".format(occValue) + ": " + str(below) + " / " + str(total) + " (" + str(below/(total)*100.0) + "%)" )
-    print("Temperature factor at " + "{:.2f}".format(occValue) + ": " + str(at_val) + " / " + str(total) + " (" + str(at_val/(total)*100.0) + "%)" )
-    print("Temperature factor above " + "{:.2f}".format(occValue) + ": " + str(above) + " / " + str(total) + " (" + str(above/(total)*100.0) + "%)" )
+    print("Occupancy below " + "{:.2f}".format(occValue) + ": " + str(below) + " / " + str(total) + " (" + str(below/(total)*100.0) + "%)" )
+    print("Occupancy at " + "{:.2f}".format(occValue) + ": " + str(at_val) + " / " + str(total) + " (" + str(at_val/(total)*100.0) + "%)" )
+    print("Occupancy above " + "{:.2f}".format(occValue) + ": " + str(above) + " / " + str(total) + " (" + str(above/(total)*100.0) + "%)" )
 
 # Main function!!
 def main():
