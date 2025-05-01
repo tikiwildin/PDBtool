@@ -147,27 +147,36 @@ def residuelength_command(atoms, args):
     #Checking for the correct number of arguments
     if len(args) != 3:
         if len(args) == 0:
+            # If no arguments were given, print missing arguments
             print("Missing arguments to reslength")
         else:
+            # If too many or too few arguments were given, print incorrect number
             print("Incorrect number of arguments to reslength")
+        # Tell the user how to correctly use the command    
         print("Usage: reslength <res_name> <chain_id> <num>")
         print("For details about the reslength command, use the 'help' command.")
-        return
+        return  # Stop the function here if the arguments are wrong
 
+    # Unpack the three arguments into separate variables
     res_name, chain_id, res_seq_str = args
 
+    # Check if res_name and chain_id are in the correct format
     if len(res_name) != 3 or not res_name.isupper() or len(chain_id) != 1 or not chain_id.isupper():
+        # If the format is wrong, show usage message
         print("Usage: reslength <res_name> <chain_id> <num>")
         print("For details about the reslength command, use the 'help' command.")
         return
 
+    # Try to convert the third argument (residue sequence number) into an interger
     try:
         res_seq = int(res_seq_str)
     except ValueError:
+        # If the conversion fails (for example, user typed a word), show usage message 
         print("Usage: reslength <res_name> <chain_id> <num>")
         print("For details about the reslength command, use the 'help' command.")
-        return
+        return  # Stop the functon if its not a number
 
+    # Filter the atoms that match the provided residue name, chain ID, and sequence number
     residue_atoms = [
         atom for atom in atoms
         if atom['res_name'] == res_name and
@@ -175,10 +184,12 @@ def residuelength_command(atoms, args):
            atom['res_seq'] == res_seq
     ]
 
+    # If no atoms match, print that the residue was not found
     if not residue_atoms:
         print("No residue present.")
         return
 
+    # Find the max distance between any two atoms in this residue
     max_distance = 0.0
     n = len(residue_atoms)
     for i in range(n):
@@ -201,25 +212,38 @@ def temp_check_command(atoms, args):
         if len(args) == 0:
             print("Missing arguments to tempcheck")
         else:
+            # If the user gives too many arguments, print message
             print("Incorrect number of arguments to tempcheck")
+        # Tell the user the correct way to use command
         print("Usage: tempcheck <decimal>")
         print("For details about the tempcheck command, use the 'help' command.")
-        return
-    
+        return  # Stop the function here if arguments are wrong
+
+    # Try to convert the argument to a decimal number
     try:
         value = float(args[0])
     except ValueError:
+        # If the user typed something that is not a number show usage message
         print("Usage: tempcheck <decimal>")
         print("For details about the tempcheck command, use the 'help' command.")
         return
+
+    # Check if the decimal number is between 0.00 and 100.00
     if value < 0.00 or value > 100.00:
+        # If its outside the range show usage message
         print("Usage: tempcheck <decimal>")
         print("For details about the tempcheck command, use the 'help' command.")
         return
-    
+    # Get total number of atoms
     total = len(atoms)
+
+    # Count how many atoms have temp factor lass than the given value
     below = sum(1 for atom in atoms if atom['temp_factor'] < value)
+    
+    # Count how many atoms have temp factor equal to given value, math.islose is used to accuracy
     at_val = sum(1 for atom in atoms if math.isclose(atom['temp_factor'], value, rel_tol=1e-6, abs_tol=1e-6))
+
+    # Calculate how many atoms have temp factor greater than the value.
     above = total - below - at_val 
 
     print("Temperature factor below {:.2f}: {} / {} ({:.1f}%)".format(value, below, total, below/total*100))
