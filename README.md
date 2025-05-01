@@ -72,7 +72,7 @@ Now you can type one of the following commands:
 
 ## Test Files
 
-Included in the test_files folder are several example PDB files that you can use to test the functionality of the program. These include:
+Included in the tests folder are several example PDB files that you can use to test the functionality of the program. These include:
 
 + ✅ Valid PDB files with properly formatted ATOM records for standard testing of all features.
 
