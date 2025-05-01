@@ -228,8 +228,7 @@ def temp_check_command(atoms, args):
 
 
 def occupancy_command(atoms, args):
-
-    #This part checks if there is an argument and if it's just 1 argument being passed. 
+    #This part checks if there is an argument and if it's just 1 argument being passed.
     #Otherwise, prints the corresponding error message
     if len(args) != 1:
         if len(args) == 0:
@@ -239,12 +238,11 @@ def occupancy_command(atoms, args):
         print("Usage: occupancy <decimal>")
         print("For details about the occupancy command, use the 'help' command.")
         return
-    
 
     argument_1 = args[0] #terminal args[1], [0] is the fileName, but somehow it works in VScode
     occValue = None
 
-    #There's at least 1 argument if the code ran till here. 
+    #There's at least 1 argument if the code ran till here.
     #This part checks if that argument contains anything besides numbers and if it within the range of (0.00-1.00)
     #Otherwise, prints the corresponding error message
     try:
@@ -254,7 +252,7 @@ def occupancy_command(atoms, args):
     except ValueError as e:
         print("Usage: occupancy <decimal>\nFor details about the occupancy command, use the 'help' command.")
         return
-    
+
     #Storing total, below, at_val, above as int
     total = len(atoms)
     below = 0;
@@ -274,12 +272,11 @@ def occupancy_command(atoms, args):
 
         else:
             at_val+=1
-    
+
     #Printing the result in the corresponding format
     print("Temperature factor below " + "{:.2f}".format(occValue) + ": " + str(below) + " / " + str(total) + " (" + str(below/(total)*100.0) + "%)" )
     print("Temperature factor at " + "{:.2f}".format(occValue) + ": " + str(at_val) + " / " + str(total) + " (" + str(at_val/(total)*100.0) + "%)" )
     print("Temperature factor above " + "{:.2f}".format(occValue) + ": " + str(above) + " / " + str(total) + " (" + str(above/(total)*100.0) + "%)" )
-
 
 # Main function!!
 def main():
