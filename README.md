@@ -70,6 +70,24 @@ Now you can type one of the following commands:
 
 + quit – Exit the program
 
+## Test Files
+
+Included in the test_files folder are several example PDB files that you can use to test the functionality of the program. These include:
+
++ ✅ Valid PDB files with properly formatted ATOM records for standard testing of all features.
+
++ ❌ Incorrect or malformed files (e.g., wrong file types or badly formatted text) to help demonstrate how the program handles errors and unexpected input.
+
+These test cases are useful for checking:
+
++ How the program parses and processes correct data.
+
++ How it responds when given a file that isn’t a PDB file.
+
++ How it handles missing fields or invalid formatting within ATOM records.
+
+Use these files to observe the program's robustness, especially its error-handling capabilities when encountering invalid input.
+
 ## Additional Document
 https://docs.google.com/document/d/1mRITJdA88KFb5D8eGXbuA3EUgomXNhkHhAdKpUNQ8p0/edit?usp=sharing
 
