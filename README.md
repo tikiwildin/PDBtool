@@ -74,9 +74,9 @@ Now you can type one of the following commands:
 
 Included in the tests folder are several example PDB files that you can use to test the functionality of the program. These include:
 
-+ ✅ Valid PDB files with properly formatted ATOM records for standard testing of all features.
++ Valid PDB files with properly formatted ATOM records for standard testing of all features.
 
-+ ❌ Incorrect or malformed files (e.g., wrong file types or badly formatted text) to help demonstrate how the program handles errors and unexpected input.
++ Incorrect or malformed files (e.g., wrong file types or badly formatted text) to help demonstrate how the program handles errors and unexpected input.
 
 These test cases are useful for checking:
 
